@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.hyeongkun.myapplication.DrawGraphActivity">
+
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="22dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/tomato"
+        android:background="@drawable/border"
+        android:id="@+id/ImageView" />
+
+    <RelativeLayout android:layout_height="300dp"
+        android:layout_width="wrap_content"
+        android:background="@drawable/border"
+        android:layout_alignParentBottom="true"
+        android:layout_alignEnd="@+id/ImageView"
+        android:layout_alignStart="@+id/ImageView">
+
+        <Button
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/tem"
+            android:id="@+id/button_t"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:textSize="20sp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+
+            android:layout_marginLeft="2dp" />
+
+
+        <TextView
+            android:text="온도"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView_t"
+            android:layout_below="@id/button_t"
+            android:layout_alignEnd="@id/button_t"
+            android:textSize="14sp"
+            android:textColor="#000000"
+            />
+
+        <Button
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/moist"
+            android:id="@+id/button_w"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:layout_alignBaseline="@+id/button_t"
+            android:layout_alignBottom="@+id/button_t"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:text="습도"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView_w"
+            android:layout_below="@id/button_w"
+            android:layout_alignEnd="@id/button_w"
+            android:textSize="14sp"
+            android:textColor="#000000"
+            />
+
+        <Button
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_l"
+            android:background="@drawable/lux"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:layout_alignBaseline="@+id/button_w"
+            android:layout_alignBottom="@+id/button_w"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="2dp" />
+
+        <TextView
+            android:text="조도"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView_l"
+            android:layout_below="@id/button_l"
+            android:layout_alignEnd="@id/button_l"
+            android:textSize="14sp"
+            android:textColor="#000000"
+            />
+
+        <Button
+            android:text="종합"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/button_total"
+            android:background="@android:drawable/presence_online" />
+
+        <Button
+            android:text="물통 수위"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/relativeLayout"
+            android:layout_alignStart="@+id/relativeLayout"
+            android:layout_marginTop="21dp"
+            android:id="@+id/button2"
+            android:background="@android:color/holo_blue_dark"
+            android:layout_width="300dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:text="토마토"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/textView" />
+
+
+</RelativeLayout>
