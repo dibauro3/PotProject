@@ -1,0 +1,98 @@
+public class FirebaseInstanceIDService extends FirebaseInstanceIdService {
+
+    private static final String TAG = "MyFirebaseIIDService";
+   @Override
+    public void onTokenRefresh(){
+
+        String token = FirebaseInstanceId.getInstance().getToken();
+        Log.d(TAG,"Refreshed token:"+token);
+
+       registerToken(token);
+    }
+
+
+
+    public  void registerToken(final String token){
+
+
+Thread thread = new Thread(new Runnable() {
+    @Override
+    public void run() {
+        try{
+            OkHttpClient client = new OkHttpClient();
+            RequestBody body = new FormBody.Builder()
+                    .add("Token",token)
+                    .build();
+
+            Request request = new Request.Builder()
+                    .url("http://192.168.21.174:81/client/Fcm_test.php")
+                    .post(body)
+                    .build();
+
+            Response response = client.newCall(request).execute();
+
+            response.body().string();
+            if (!response.isSuccessful()) throw new
+                    IOException("Unexpected code " + response);
+        }catch(Exception e)
+        {
+            System.out.println("FIL FUNCTION errroros hwa "+e);
+        }
+    }
+});
+
+        thread.start();
+    }
+
+
+}
+
+////////////////////////////////////////
+
+public class FirebaseMessaging_Service extends com.google.firebase.messaging.FirebaseMessagingService {
+
+    private  static  final  String TAG = "FirebaseMsgService";
+
+        @Override
+        public void onMessageReceived(RemoteMessage remoteMessage){
+            super.onMessageReceived(remoteMessage);
+            String from = remoteMessage.getFrom();
+            Log.d(TAG,"From:"+from);
+            //Log.d(TAG,"Notification Message Body:"+remoteMessage.getNotification().getBody());
+
+            if(remoteMessage.getNotification() != null){
+                Log.d(TAG,"NOTIFICATION:"+ remoteMessage.getNotification().getBody());
+                sendNotification(remoteMessage.getNotification().getTitle(),remoteMessage.getNotification().getBody());
+            }
+            if(remoteMessage.getData().size() > 0){
+                Log.d(TAG,"Data:"+remoteMessage.getData());
+            }
+
+            //sendNotification(remoteMessage.getData().get("message"));
+
+        }
+
+
+    private void sendNotification(String title,String message) {
+
+        Intent i = new Intent(this,AccountActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,0,i,PendingIntent.FLAG_ONE_SHOT);
+
+
+        NotificationCompat.Builder builder = (NotificationCompat.Builder) new NotificationCompat.Builder(this)
+                .setAutoCancel(true)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
+                .setContentIntent(pendingIntent);
+
+        NotificationManager manger = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        manger.notify(0,builder.build());
+
+    }
+
+}
+
