@@ -1,0 +1,161 @@
+
+//DisplayListView Viewer row_data
+public class ContactAdapter extends ArrayAdapter {
+    List list = new ArrayList();
+
+    public ContactAdapter(Context context, int resource) {
+        super(context, resource);
+    }
+
+
+    public void add(Contacts object) {
+        super.add(object);
+        list.add(object);
+    }
+
+    @Override
+    public int getCount() {
+        return list.size();
+    }
+
+    @Nullable
+    @Override
+    public Object getItem(int position) {
+        return list.get(position);
+    }
+
+    @NonNull
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        View row;
+        row = convertView;
+        ContactHolder contactHolder;
+        if(row == null){
+            LayoutInflater layoutInflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            row = layoutInflater.inflate(R.layout.activity_row_layout,parent,false);
+            contactHolder = new ContactHolder();
+            contactHolder.tx_moi = (TextView) row.findViewById(R.id.tx_moi);
+            contactHolder.tx_ill = (TextView) row.findViewById(R.id.tx_ill);
+            contactHolder.tx_temp = (TextView) row.findViewById(R.id.tx_temp);
+            contactHolder.tx_humi = (TextView) row.findViewById(R.id.tx_humi);
+            contactHolder.tx_date = (TextView) row.findViewById(R.id.tx_date);
+
+
+            row.setTag(contactHolder);
+        }
+        else{
+            contactHolder = (ContactHolder)row.getTag();
+        }
+        Contacts contacts = (Contacts) this.getItem(position);
+        contactHolder.tx_moi.setText(contacts.getMoi());
+        contactHolder.tx_ill.setText(contacts.getIll());
+        contactHolder.tx_temp.setText(contacts.getTemp());
+        contactHolder.tx_humi.setText(contacts.getHumi());
+        contactHolder.tx_date.setText(contacts.getDate());
+
+        return row;
+    }
+
+    static class ContactHolder{
+
+        TextView tx_moi,tx_ill,tx_temp,tx_humi,tx_date;
+
+    }
+}
+
+
+///////////////////////////////////////////////////
+
+//contactc define
+public class Contacts {
+
+    private  String moi,ill,temp,humi,date,update;
+
+    public  Contacts(String moi,String ill,String temp,String humi,String date){
+
+        this.setMoi(moi);
+        this.setIll(ill);
+        this.setTemp(temp);
+        this.setHumi(humi);
+        this.setDate(date);
+
+    }
+
+    public String getMoi() {
+        return moi;
+    }
+
+    public void setMoi(String moi) {
+        this.moi = moi;
+    }
+
+    public String getIll() {
+        return ill;
+    }
+
+    public void setIll(String ill) {
+        this.ill = ill;
+    }
+
+    public String getTemp() {
+        return temp;
+    }
+
+    public void setTemp(String temp) {
+        this.temp = temp;
+    }
+
+    public String getHumi() {
+        return humi;
+    }
+
+    public void setHumi(String humi) {
+        this.humi = humi;
+    }
+
+    public String getDate() {
+        int i = date.indexOf(".0000");
+        update = date.substring(0,i);
+        return update;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+
+}
+
+
+//////////////////////////////////////////////
+
+
+
+
+        listView = (ListView) findViewById(R.id.listview);
+        contactAdapter = new ContactAdapter(this,R.layout.activity_row_layout);
+        json_string = getIntent().getExtras().getString("json_data");
+        listView.setAdapter(contactAdapter);
+        try {
+            jsonObject= new JSONObject(json_string);
+            jsonArray = jsonObject.getJSONArray("server_response");
+            int count=0;
+            String moi,ill,temp,humi,date;
+            while(count<jsonArray.length()){
+                JSONObject JO = jsonArray.getJSONObject(count);
+                moi= JO.getString("moi");
+                ill=JO.getString("ill");
+                temp =JO.getString("temp");
+                humi =JO.getString("humi");
+                date =JO.getString("date");
+
+                Contacts contacts = new Contacts(moi,ill,temp,humi,date);
+                contactAdapter.add(contacts);
+
+                count++;
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
