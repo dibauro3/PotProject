@@ -1,0 +1,251 @@
+
+public class GalleryActivity extends AppCompatActivity  {
+
+
+    String json_Img;
+    Button btn_img_load,free;
+     String[] img_path = null;
+    String img_size;
+    GridView gridView;
+    Bitmap[] img_bitmap;
+    TextView textView;
+    AsyncTask<Void, Void, Void> mTask;
+    private String json_String,minfo;
+    private static final String IMAGES_URL = "http://211.44.136.164:7777/folder.php";
+    String name = null;
+    MyAdapter adapter = null;
+
+    ProgressDialog progressDialog;
+    JSONObject jsonObject = null;
+    JSONArray jsonArray = null;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_gallery);
+
+        gridView = (GridView) findViewById(R.id.grid_view);
+       // btn_img_load.setOnClickListener(this);
+        new HttpUtil().execute();
+
+
+        new Handler().postDelayed(new Runnable() {                                                  //웹에서 데이터를 가져올 시 어느정도 딜레이가 필요하기 때문에 딜레이 부여
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }finally {
+
+                    set();
+                }
+
+                }
+        }, 3000);
+
+
+
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                Intent intent = new Intent(GalleryActivity.this,PlantMain.class);
+                intent.putExtra("gallery_data",position);
+                startActivity(intent);
+
+                //textView.setText("position : " + position);
+            }
+        });
+
+
+        //세번째 버튼은 테이블을 검색 하는 역할
+
+    }
+
+    private void set(){
+
+        img_bitmap = new Bitmap[img_path.length];
+        for(int i =0; img_path.length>i;i++) {
+            img_bitmap[i] = new GalleryImageRoader().getBitmapImg("img_load/" + img_path[i]);
+        }
+
+        adapter = new MyAdapter(getApplicationContext(),R.layout.activity_rowimg,img_bitmap);
+
+
+        gridView.setAdapter(adapter);
+
+    }
+
+    private URL Url;
+    private String strUrl,strCookie,result;
+
+    public class HttpUtil extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            strUrl = "http://192.168.80.80:7777/get_file_name.php";
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            try{
+                Url = new URL(strUrl);
+                HttpURLConnection conn = (HttpURLConnection) Url.openConnection();
+                conn.setRequestMethod("GET"); // get방식 통신
+                conn.setDoOutput(true);
+                conn.setDoInput(true);
+                conn.setUseCaches(false);
+                conn.setDefaultUseCaches(false);
+
+                strCookie = conn.getHeaderField("Set-Cookie");
+                InputStream is = conn.getInputStream();
+
+                StringBuilder builder = new StringBuilder();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(is,"UTF-8"));
+                String line;
+
+                while ((line = reader.readLine()) != null) {
+                    builder.append(line+ "\n");
+                }
+
+                result = builder.toString();
+            }catch(MalformedURLException | ProtocolException exception) {
+                exception.printStackTrace();
+            }catch(IOException io){
+                io.printStackTrace();
+            }
+            return null;
+        }
+
+        ///////
+        @Override
+        protected  void onProgressUpdate(Void... values){
+            super.onProgressUpdate(values);
+
+        }
+        //////
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            System.out.println("result:"+result);
+            minfo = result;
+            try {
+                jsonObject= new JSONObject(result);
+                jsonArray = jsonObject.getJSONArray("response_data");
+                int count=0;
+                img_path=new String[jsonArray.length()];
+                String name=null;
+                while(count<jsonArray.length()){
+                    JSONObject JO = jsonArray.getJSONObject(count);
+                    name= JO.getString("url");
+                    img_path[count] = name;
+
+                    System.out.println("total:"+name);
+                    System.out.println("total123:"+img_path[count]);
+                    count++;
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+
+    class MyAdapter extends BaseAdapter
+
+    {
+        Context context;
+        int layout;
+        Bitmap img[];
+        LayoutInflater inf;
+
+        public MyAdapter(Context context, int layout, Bitmap[] img) {
+            this.context = context;
+            this.layout = layout;
+            this.img = img;
+            inf = (LayoutInflater) context.getSystemService
+                    (Context.LAYOUT_INFLATER_SERVICE);
+        }
+
+        @Override
+        public int getCount() {
+            return img.length;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return img[position];
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView==null)
+                convertView = inf.inflate(layout, null);
+            ImageView iv = (ImageView)convertView.findViewById(R.id.img_gridView);
+            iv.setImageBitmap(img[position]);
+
+            return convertView;
+        }
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+public class GalleryImageRoader {
+
+        private final String serverUrl = "http://192.168.21.104:7777/";
+
+        public GalleryImageRoader() {
+
+            new ThreadPolicy();
+        }
+
+        public Bitmap getBitmapImg(String imgStr) {
+
+            Bitmap bitmapImg = null;
+
+            try {
+                URL url = new URL(serverUrl + imgStr);
+                //URLEncoder.encode(imgStr,"utf-8"));
+                // Character is converted to 'UTF-8' to prevent broken
+
+                HttpURLConnection conn = (HttpURLConnection) url
+                        .openConnection();
+                conn.setDoInput(true);
+                conn.connect();
+
+                InputStream is = conn.getInputStream();
+                bitmapImg = BitmapFactory.decodeStream(is);
+
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
+            return bitmapImg;
+        }
+
+        @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+        public static class ThreadPolicy {
+
+            // For smooth networking
+            public ThreadPolicy() {
+
+                StrictMode.ThreadPolicy policy =
+                        new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+                StrictMode.setThreadPolicy(policy);
+            }
+        }
+    }
+
+
