@@ -1,0 +1,208 @@
+
+public class LoginActivity  extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
+
+        private SignInButton mGooglebtn;
+        private  static final  int RC_SIGN_IN = 1;
+        private GoogleApiClient mGoogleApiClient;
+       // private FirebaseAuth mAuth;
+        //private FirebaseAuth.AuthStateListener mAuthListener;
+       static final int RC_GOOGLE_SIGN_IN = 9001;
+       SignInButton mSigninGoogleButton;
+       FirebaseAuth mFirebaseAuth;
+   // FirebaseUser mFirebaseUser;
+    FirebaseAuth.AuthStateListener mFirebaseAuthListener;
+    private static final String TAG = "LoginActivity";
+    String mGname,mGemail,mUid;
+
+        private EditText et_email,et_password;
+        private Button btn_register,btn_login;
+        private DatabaseReference mDatabaseUser;
+        private ProgressDialog mProgress;
+
+
+        protected void  onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_login);
+
+            et_email = (EditText)findViewById(R.id.et_loginemail);
+            et_password =(EditText)findViewById(R.id.et_loginpassword);
+            btn_login =(Button)findViewById(R.id.btn_login);
+            btn_register = (Button)findViewById(R.id.btn_loginregister);
+            mProgress = new ProgressDialog(this);
+            //FirebaseUser
+            mDatabaseUser = FirebaseDatabase.getInstance().getReference().child("Users");
+
+            //Firebase
+            mFirebaseAuth = FirebaseAuth.getInstance();
+            //Google_User_data
+           // mFirebaseUser = mFirebaseAuth.getCurrentUser();
+
+            //FirebaseListener  Logining->MainActivity
+            mFirebaseAuthListener = new FirebaseAuth.AuthStateListener() {
+                @Override
+                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                    FirebaseUser user = firebaseAuth.getCurrentUser();
+                    if ( user != null ) {
+                        //Intent intent = getIntent();
+                        //String name;
+                        //name = intent.getExtras().getString("name");
+                        Log.d(TAG, "sign in");
+
+                        Intent mainintent = new Intent(LoginActivity.this, PlantMain.class);
+                        //mainintent.putExtra("name",name);
+
+                        startActivity(mainintent);
+                        finish();
+                    }
+                    else {
+                        Log.d(TAG, "sign out");
+                    }
+
+                }
+            };
+            //GoogleLogin
+            mSigninGoogleButton = (SignInButton) findViewById(R.id.sign_in_google_button);
+            mSigninGoogleButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+                    startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN);
+                }
+            });
+            //GoogleClient select result
+            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(getString(R.string.default_web_client_id))
+                    .requestEmail()
+                    .build();
+
+
+            //GoogleClient select menu
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .enableAutoManage(this, this)
+                    .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                    .build();
+
+
+            //Login
+            btn_login.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(v.isClickable()) {
+                        checkLogin();
+                    }
+
+                }
+            });
+
+            //register
+            btn_register.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent regintent = new Intent(LoginActivity.this,MemberRegActivity.class);
+                    startActivity(regintent);
+                }
+            });
+
+        }
+
+        //login 확인
+        private void checkLogin(){
+            String email = et_email.getText().toString().trim();
+            String password = et_password.getText().toString().trim();
+
+            if(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)){
+
+                mProgress.setMessage("checking...Login");
+                mProgress.show();
+                //Login email,password check
+                mFirebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
+
+                            mProgress.dismiss();
+                            checkUserExist();
+
+                        }else{
+                            mProgress.dismiss();
+                            Toast.makeText(LoginActivity.this,"Error Login",Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+                });
+            }else{
+                Toast.makeText(LoginActivity.this,"빈칸을 채우시오",Toast.LENGTH_LONG).show();
+
+            }
+        }
+        // id 존재여부 확인
+        private void checkUserExist(){
+
+            if(mFirebaseAuth.getCurrentUser() != null) {
+
+                final String user_id = mFirebaseAuth.getCurrentUser().getUid();
+                mDatabaseUser.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.hasChild(user_id)) {
+
+                            Intent mainIntent = new Intent(LoginActivity.this, PlantMain.class);
+                            mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(mainIntent);
+
+
+                        } else {
+                            Toast.makeText(getApplicationContext(),"Information Not Correct",Toast.LENGTH_LONG).show();
+                            //Intent setupIntent = new Intent(LoginActivity.this, GalleryActivity.class);
+                            //setupIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            //startActivity(setupIntent);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.d(TAG, "onConnectionFailed:" + databaseError);
+                    }
+                });
+            }else{
+                Toast.makeText(getApplication(),"Id NOT exist"+mFirebaseAuth.getCurrentUser().toString().trim(),Toast.LENGTH_LONG).show();
+            }
+
+        }
+
+//Google_Login require in Firebase
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mFirebaseAuth.addAuthStateListener(mFirebaseAuthListener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if ( mFirebaseAuthListener != null )
+            mFirebaseAuth.removeAuthStateListener(mFirebaseAuthListener);
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Log.d(TAG, "onConnectionFailed:" + connectionResult);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if ( requestCode == RC_GOOGLE_SIGN_IN ) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            if ( result.isSuccess() ) {
+                String token = result.getSignInAccount().getIdToken();
+                AuthCredential credential = GoogleAuthProvider.getCredential(token, null);
+                mFirebaseAuth.signInWithCredential(credential);
+            }
+            else {
+                Log.d(TAG, "Google Login Failed." + result.getStatus());
+            }
+        }
+    }
+}
