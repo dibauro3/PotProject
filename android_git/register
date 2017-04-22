@@ -1,0 +1,153 @@
+//register
+public class MemberRegActivity extends AppCompatActivity {
+
+
+    private EditText mname, memail, mpassword,mpass_check;
+    private Button btn_register,btn_check;
+    private FirebaseAuth mAuth;
+    private DatabaseReference mDatabase;
+
+
+    private ProgressDialog progressDialog;
+
+
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_register);
+
+        progressDialog = new ProgressDialog(this);
+        mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
+
+
+
+        mname = (EditText) findViewById(R.id.et_name);
+        memail = (EditText) findViewById(R.id.et_email);
+        mpassword = (EditText) findViewById(R.id.et_password);
+        mpass_check = (EditText) findViewById(R.id.et_passcheck);
+
+        btn_register = (Button) findViewById(R.id.btn_register);
+        btn_check =(Button) findViewById(R.id.btn_check);
+
+
+        //register
+        btn_register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startRegister();
+            }
+        });
+
+        //id_check
+        btn_check.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+
+                final String email = memail.getText().toString().trim();
+                if (!TextUtils.isEmpty(email)){
+
+                    progressDialog.setMessage("User_email checking");
+                    progressDialog.show();
+
+
+                    ValueEventListener checkRegister = new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+                            Iterator<DataSnapshot> child = dataSnapshot.getChildren().iterator();
+
+                            while (child.hasNext()) {//마찬가지로 중복 유무 확인
+                                if (memail.getText().toString().equals(child.next().getKey())) {
+                                    Toast.makeText(getApplicationContext(), "존재하는 아이디 입니다.", Toast.LENGTH_LONG).show();
+                                    mDatabase.removeEventListener(this);
+
+                                    return;
+                                }
+                            }
+                            progressDialog.dismiss();
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    };
+
+             
+                    //User_id create_ exist check
+
+                }else{
+                    Toast.makeText(getApplication(),"빈칸 or 비밀번호를 확인해주세요~",Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+
+
+    }
+
+//register fun
+    private void startRegister() {
+
+        final String name = mname.getText().toString().trim();
+        final String email = memail.getText().toString().trim();
+        String password = mpassword.getText().toString().trim();
+        String pass_check = mpass_check.getText().toString().trim();
+        final String method = "register";
+
+//email | password | name empty message
+        if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(email) && !TextUtils.isEmpty(password) && !TextUtils.isEmpty(pass_check) && password.equals(pass_check)){
+
+            progressDialog.setMessage("Signing Up");
+            progressDialog.show();
+
+
+            //User_id create_ exist check
+                mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+
+                        if (task.isSuccessful() && !email.contains("gmail")) {
+
+
+                        String user_id = mAuth.getCurrentUser().getUid();
+
+                        DatabaseReference cureent_user_db = mDatabase.child(user_id);
+
+                        //register_data Firebase DB save
+                        cureent_user_db.child("name").setValue(name);
+                        cureent_user_db.child("email").setValue(email);
+                        cureent_user_db.child("uid").setValue(mAuth.getCurrentUser().getUid());
+
+                        //mysql_DB save
+                            BackgroundTask backgroundTask= new BackgroundTask(MemberRegActivity.this);
+                            backgroundTask.execute(method,name,email,user_id);
+                            finish();
+
+                            progressDialog.dismiss();
+
+                            Intent logIntent = new Intent(MemberRegActivity.this, LoginActivity.class);
+                            logIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(logIntent);
+                        } else {
+                            progressDialog.dismiss();
+
+                            Toast.makeText(getApplicationContext(), "중복된 이메일 주소 or \n password를 6자리 이상설정하세요", Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+                });
+            }else{
+                    Toast.makeText(getApplication(),"빈칸 or 비밀번호를 확인해주세요~",Toast.LENGTH_LONG).show();
+
+            }
+        }
+
+
+    }
+
