@@ -1,0 +1,29 @@
+<?php
+$servername = "localhost"; //replace it with your database server name
+$username = "root";  //replace it with your database username
+$password = "";  //replace it with your database password
+$dbname = "fcm";
+// Create connection
+$conn = mysql_connect($servername,$username,$password) or die ("db connection falie");
+mysql_select_db($dbname,$conn);
+
+<?php
+
+	if(isset($_POST["Token"])){
+
+		$token = $_POST["Token"];
+		require "pushconnect.php";
+		$query = "INSERT INTO users(Token) Values ('$token') ON DUPLICATE KEY UPDATE Token = '$token'; ";
+		
+if(mysql_query($query))
+{
+echo "<h3> Data insertion Success..</h3>";
+}
+else
+{
+echo " Data insertion failed.." .mysql_error($conn);
+}
+
+		mysqli_close($conn);
+	}
+?>
