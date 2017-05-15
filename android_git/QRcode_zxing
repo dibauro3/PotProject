@@ -1,0 +1,76 @@
+
+public class PotRegActivity extends AppCompatActivity{
+
+     ArrayList<String> items = new ArrayList<String>() ;
+     ArrayAdapter adapter;
+    private Button button;
+    ListView listView;
+
+    @Override
+    protected  void onCreate(Bundle savedInstancestate) {
+        super.onCreate(savedInstancestate);
+        setContentView(R.layout.activity_potreg);
+
+        button = (Button) this.findViewById(R.id.btn_QR);
+
+
+        // ArrayAdapter 생성. 아이템 View를 선택가능하도록 만듦.
+        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_single_choice, items) ;
+        // listview 생성 및 adapter 지정.
+         ListView listview = (ListView) findViewById(R.id.listView2) ;
+        listview.setAdapter(adapter) ;
+
+
+        final Activity activity = this;
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                IntentIntegrator integrator = new IntentIntegrator(activity);
+                integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
+                integrator.setPrompt("Scan");
+                integrator.setCameraId(0);
+                integrator.setBeepEnabled(false);
+                integrator.setBarcodeImageEnabled(false);
+                integrator.initiateScan();
+            }
+        });
+
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Intent intent = new Intent(getApplicationContext(),PlantListRegActivity.class);
+
+                //intent.putExtra("data",position);
+                startActivity(intent);
+            }
+        });
+    }
+
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode,resultCode,data);
+        if(result !=null){
+            if(result.getContents() == null){
+                Toast.makeText(this,"cancelled",Toast.LENGTH_LONG).show();
+            }else{
+                Toast.makeText(this,"scanned"+result.getContents(),Toast.LENGTH_LONG).show();
+                items.add(result.getContents().toString());
+                //BackgroundTask.excute();             
+
+                // listview 갱신
+                adapter.notifyDataSetChanged();
+
+
+
+            }
+        }else{
+            super.onActivityResult(resultCode,resultCode,data);
+        }
+    }
+
+
+
+}
