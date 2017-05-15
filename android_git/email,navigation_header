@@ -1,0 +1,13 @@
+ Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                        emailIntent.putExtra(Intent.EXTRA_EMAIL,new String[]{"qkrwogk110@naver.com"});
+                        emailIntent.putExtra(Intent.EXTRA_SUBJECT,"관리자에게 건의하기");
+                        emailIntent.setType("message/rfc822");
+                        startActivity(Intent.createChooser(emailIntent,"Choose email client..."));
+
+   View nav_header_view = navigationView.getHeaderView(0);
+        tv_user =  (TextView)nav_header_view.findViewById(R.id.tv_drawer);
+        tv_user.setText(name);
+        
+        
+     style -   <item name="android:windowFullscreen">true</item>
+       drawer_header.xml -   android:background="@drawable/background_metal"
