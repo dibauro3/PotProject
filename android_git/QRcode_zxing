@@ -5,6 +5,11 @@ public class PotRegActivity extends AppCompatActivity{
      ArrayAdapter adapter;
     private Button button;
     ListView listView;
+    String user=null,GETDEVICE=null;
+    JSONObject jsonObject;
+    JSONArray jsonArray;
+    String[] device_number = null;
+    NetworkState networkState = new NetworkState();
 
     @Override
     protected  void onCreate(Bundle savedInstancestate) {
@@ -13,8 +18,37 @@ public class PotRegActivity extends AppCompatActivity{
 
         button = (Button) this.findViewById(R.id.btn_QR);
 
+        user = getIntent().getExtras().getString("USER");
+        GETDEVICE = getIntent().getExtras().getString("DEVICE");               //intent data get
 
-        // ArrayAdapter 생성. 아이템 View를 선택가능하도록 만듦.
+        Log.d("deviceData",GETDEVICE+user);
+if(GETDEVICE !=null) {
+    try {                                                                       //json 객체로 변환 하여 배열에 저장
+        jsonObject = new JSONObject(GETDEVICE);
+        jsonArray = jsonObject.getJSONArray("device_response");
+        int count = 0;
+        device_number = new String[jsonArray.length()];
+        String device = null;
+        while (count < jsonArray.length()) {
+            JSONObject JO = jsonArray.getJSONObject(count);
+            device = JO.getString("device");
+            device_number[count] = device;
+
+            System.out.println("device123:" + device_number[count]);
+            count++;
+        }
+
+    } catch (JSONException e) {
+        e.printStackTrace();
+    } catch (NullPointerException e) {
+        e.printStackTrace();
+    }
+
+}else{
+    Toast.makeText(getApplicationContext(),"데이터를 불러오지 못하였습니다.",Toast.LENGTH_SHORT).show();
+}
+
+        // ArrayAdapter 생성. 아이템 View를 선택(single choice)가능하도록 만듦.
         adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_single_choice, items) ;
         // listview 생성 및 adapter 지정.
          ListView listview = (ListView) findViewById(R.id.listView2) ;
@@ -35,18 +69,19 @@ public class PotRegActivity extends AppCompatActivity{
             }
         });
 
+        //scan한 데이터가 리스트에 저장되었을때 선택시 리스트 데이터를 보낸다.
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Intent intent = new Intent(getApplicationContext(),PlantListRegActivity.class);
-
-                //intent.putExtra("data",position);
+                Intent intent = new Intent(getApplicationContext(),PlantListDicActivity.class);
+                intent.putExtra("PLANT_NUMBER",items.get(position));    // 스캔정보가 넘어가면 db 데이터와 확인하여 관련 테이블에 식물을 저장한다.
+                //intent.putExtra("PLANT_STATE","1");
                 startActivity(intent);
             }
         });
     }
-
+//데이터가 스캔되면 db에 저장하고 저장된 데이터를 확인해야한다.
 
 
     @Override
@@ -56,10 +91,36 @@ public class PotRegActivity extends AppCompatActivity{
             if(result.getContents() == null){
                 Toast.makeText(this,"cancelled",Toast.LENGTH_LONG).show();
             }else{
-                Toast.makeText(this,"scanned"+result.getContents(),Toast.LENGTH_LONG).show();
-                items.add(result.getContents().toString());
-                //BackgroundTask.excute();             
 
+                Boolean bool = false;
+                String device = result.getContents().toString();
+                //아이디별 저장하는것 해야됨
+
+                    for(int i =0; i>device_number.length;i++){
+
+                        if(device_number.equals(device)){
+                            bool=true;
+                        }
+                    }
+
+                //스캔시 데이터가 db에 저장된 고유의 기기인지 확인하는 if문 필요함 이후 등록도 되어야함 가져오고 저장하고를 동시에 해야함
+
+                if(bool==true ||  networkState.isConnected(PotRegActivity.this)) {
+                    String method = "device";
+                    BackgroundTask backgroundTask = new BackgroundTask(PotRegActivity.this);
+                    backgroundTask.execute(method, user, device);
+                    for(int i=0;i>items.size();i++) {
+                        if(items.get(i).equals(device)){
+                            Toast.makeText(getApplicationContext(),"이미 확인된 기기입니다.",Toast.LENGTH_SHORT).show();
+                        }else {
+                            items.add(device);
+                                }
+                        }
+
+                }else{
+                    //network check_line
+                        networkState.buildDialog(PotRegActivity.this).show();
+                }
                 // listview 갱신
                 adapter.notifyDataSetChanged();
 
@@ -70,7 +131,5 @@ public class PotRegActivity extends AppCompatActivity{
             super.onActivityResult(resultCode,resultCode,data);
         }
     }
-
-
 
 }
