@@ -1,0 +1,43 @@
+NetworkState networkState = new NetworkState();
+ if (!networkState.isConnected(DrawGraphActivity.this)) {
+                        networkState.buildDialog(DrawGraphActivity.this).show();
+                    } else {}
+
+////////////////////////////////////////////////////////////////
+public class NetworkState  extends AppCompatActivity {
+
+
+    public AlertDialog.Builder buildDialog(Context c){
+        AlertDialog.Builder builder = new AlertDialog.Builder(c);
+        builder.setTitle("인터넷 연결안됨");
+        builder.setMessage("인터넷 연결을 확인해주세요.");
+
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        return builder;
+    }
+
+
+        public boolean isConnected(Context context) {
+            ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+            if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
+                android.net.NetworkInfo wifi = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+                android.net.NetworkInfo mobile = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+
+                if((mobile !=null && mobile.isConnectedOrConnecting()) || (wifi !=null && wifi.isConnectedOrConnecting()))
+                {return  true;
+                }else{
+                    return false;}
+
+            }else {
+                return false;
+            }
+        }
+
+}
+
