@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.parkjaeha.firebasetest">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+
+    <permission
+        android:name="com.example.parkjaeha.firebasetest.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.example.parkjaeha.firebasetest.permission.C2D_MESSAGE" />
+    <uses-feature android:name="android.hardware.camera2" android:required="true"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/poticon"
+        android:label="My Pot"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:name=".Fireapp">
+        <activity android:name=".IntroActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />.
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+
+
+        <activity android:name=".PlantMain"
+           />
+
+        <activity android:name=".MemberRegActivity"
+        />
+        <activity android:name=".LoginActivity"/>
+        <activity android:name=".GalleryActivity"/>
+        <activity android:name=".PotRegActivity"/>
+        <activity android:name=".DrawTotalGraphActivity"
+            android:screenOrientation="nosensor" />
+        <activity
+            android:theme="@style/Graph"
+            android:name=".DrawGraphActivity"
+            />
+        <activity android:name=".PlantListDicActivity" />
+        <activity android:name=".WebStreamActivity"/>
+
+
+        <activity
+            android:name=".ViewPagerActivity"
+            android:theme="@android:style/Theme.DeviceDefault.Light.Dialog"/>
+
+        <activity android:name=".PlantDicInfoMenu">
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+
+
+        <service
+            android:name=".FirebaseMessaging_Service">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+        </intent-filter>
+        </service>
+
+        <service
+            android:name=".FirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+
+    </application>
+
+
+</manifest>

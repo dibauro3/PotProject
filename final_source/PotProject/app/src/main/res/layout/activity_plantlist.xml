@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#77BAB5">
+
+    <TextView
+        android:text="식물등록"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView3"
+        android:gravity="center"
+        android:textSize="20sp" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#F5F5F5"
+        android:paddingLeft="10dp"
+        android:layout_marginTop="10dp">
+
+        <ImageView
+            app:srcCompat="@drawable/cast_mini_controller_progress_drawable"
+            android:id="@+id/imageView4"
+            android:background="@drawable/watch"
+            android:layout_weight="1"
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/editText"
+            android:hint="Search"
+            android:layout_weight="1"
+            android:layout_marginLeft="25dp"
+            android:textColorLink="@android:color/holo_purple" />
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/listview_plantlist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:background="@android:color/background_light" />
+
+
+</LinearLayout>

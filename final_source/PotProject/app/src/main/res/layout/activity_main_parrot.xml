@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fitsSystemWindows="true"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark"
+            android:id="@+id/toolbar"
+            android:background="#FFFFFF"
+            app:titleTextColor="@color/cast_intro_overlay_background_color" />
+
+
+        <LinearLayout android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_alignParentBottom="true"
+
+            android:layout_alignEnd="@+id/small_Rlayout"
+            android:layout_alignStart="@+id/small_Rlayout"
+            android:layout_marginBottom="20dp"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/small_Rlayout"
+                android:layout_alignParentStart="true">
+
+                <TextView
+                    android:text="TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/text_plantname"
+                    android:layout_gravity="center"
+                    android:layout_below="@+id/toolbar"
+                    android:layout_centerHorizontal="true"
+                    android:textSize="22sp" />
+
+                <ImageView
+                    android:src="@drawable/waterlv0"
+                    android:id="@+id/wl_imageView"
+                    android:layout_gravity="center"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="300dp"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="15dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_gravity="bottom"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <Button
+
+                        android:id="@+id/button_m"
+                    android:background="@drawable/moisture"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginStart="25dp"
+                    android:layout_above="@+id/textView_w"
+                    android:layout_toEndOf="@+id/button_total"
+                        android:layout_width="85dp"
+                        android:layout_height="85dp" />
+
+                    <TextView
+                    android:text="수분"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:id="@+id/textView_l"
+                    android:layout_below="@+id/button_m"
+                    android:layout_alignEnd="@+id/button_m"
+                    android:textSize="14sp"
+                    android:textColor="#000000"
+                    android:textAlignment="center" />
+
+            </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content">
+
+                    <Button
+
+                        android:background="@drawable/humidity"
+                    android:id="@+id/button_h"
+                            android:layout_marginStart="25dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_above="@+id/textView6"
+                        android:layout_width="85dp"
+                        android:layout_height="85dp" />
+
+                    <TextView
+                            android:text="습도"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:id="@+id/textView_w"
+                            android:textSize="14sp"
+                            android:textColor="#000000"
+                            android:textAlignment="center" />
+                    </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/button_t"
+                        android:textSize="20sp"
+                    android:background="@drawable/miscellaneous"
+                    android:layout_marginStart="25dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_alignTop="@+id/button_h"
+                        android:layout_alignParentStart="true"
+                        android:layout_width="85dp"
+                        android:layout_height="85dp" />
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:text="온도"
+                        android:layout_height="30dp"
+                        android:id="@+id/textView_t"
+                        android:textSize="14sp"
+                        android:textColor="#000000"
+                        android:textAlignment="center" />
+
+                </LinearLayout>
+        </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_gravity="top"
+                android:layout_alignParentBottom="true"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/button_total"
+                    android:background="@drawable/line_graph"
+                    android:layout_height="80dp"
+                    android:layout_width="80dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="11dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignStart="@+id/textView" />
+
+                <TextView
+                    android:text="종합그래프"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView6"
+                    android:gravity="center"
+                    android:textColor="@android:color/black"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
+        android:id="@+id/small_Rlayout"
+        android:layout_width="match_parent"
+            android:layout_below="@+id/toolbar"
+            android:background="@drawable/background2"
+            android:layout_alignParentStart="true"
+            android:layout_height="200dp">
+
+        <ImageButton
+        android:background="@drawable/utube"
+            android:id="@+id/imageButton"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+            android:layout_width="80dp"
+            android:layout_height="80dp" />
+    </RelativeLayout>
+
+    </RelativeLayout>
+
+<android.support.design.widget.NavigationView
+android:id="@+id/navigation_view"
+android:layout_width="wrap_content"
+android:layout_height="match_parent"
+android:layout_gravity="start"
+app:headerLayout="@layout/drawer_header"
+app:menu="@menu/drawer"/>
+
+
+</android.support.v4.widget.DrawerLayout>

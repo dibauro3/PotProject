@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/plant_dictionary"
+            android:checked="true"
+            android:icon="@drawable/ic_attachment"
+            android:title="식물도감" />
+        <item
+            android:id="@+id/using_desc"
+            android:icon="@drawable/ic_image"
+            android:title="사용법" />
+        <item
+            android:id="@+id/plant_register"
+            android:icon="@drawable/ic_place"
+            android:title="식물등록" />
+
+    </group>
+
+    <item android:title="기타 메뉴">
+        <menu>
+            <item
+                android:icon="@android:drawable/ic_dialog_email"
+                android:id="@+id/nav_sub_menu_item01"
+                android:title="메일보내기" />
+            <item
+                android:icon="@android:drawable/ic_menu_gallery"
+                android:id="@+id/nav_sub_menu_gallery"
+                android:title="갤러리" />
+
+            <item
+                android:icon="@android:drawable/ic_lock_power_off"
+                android:id="@+id/nav_sub_menu_signout"
+                android:title="LogOut" />
+        </menu>
+
+    </item>
+
+</menu>

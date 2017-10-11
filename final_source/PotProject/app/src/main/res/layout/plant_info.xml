@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#90CFD5">
+
+    <TextView
+        android:text="식물의이름"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_plantName"
+        android:gravity="center"
+        android:textSize="20sp" />
+
+    <LinearLayout
+        android:background="#FFFFFF"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="match_parent"
+            app:srcCompat="@mipmap/ic_launcher"
+            android:id="@+id/imgview_plantInfo"
+            android:layout_below="@+id/text_plantName"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp"
+            android:background="#FFFFFF"
+            android:paddingTop="10sp"
+            android:paddingBottom="10sp"
+            android:scaleType="fitCenter"
+            android:layout_height="200dp" />
+    </LinearLayout>
+
+
+    <View
+        android:layout_height="1dip"
+        android:layout_width="fill_parent"
+        android:background="#FF0000FF"
+        />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <TextView
+            android:text="식물정보"
+            android:id="@+id/tx_plant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imgview_plantInfo"
+            android:layout_alignParentStart="true"
+            android:textSize="18sp"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:background="#90AAD1"/>
+
+        <TextView
+            android:text="식물관리"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tx_info"
+            android:layout_weight="1"
+            android:textSize="18sp"
+            android:textAlignment="center"
+            android:background="#90AAD1"/>
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:id="@+id/frame"
+        android:background="#FFFFFF"
+        android:layout_height="230dp">
+
+
+        <TextView
+                android:text="TextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/text_plantInfo"
+                android:layout_below="@+id/text"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="20dp"
+            android:gravity="center" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:id="@+id/layout"
+            android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:weightSum="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                    <TextView
+                        android:text="급수"
+                        android:layout_width="100dp"
+                        android:id="@+id/tx_1"
+                        android:layout_weight="1"
+                        android:textSize="20dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_height="60dp"
+                        android:gravity="center_vertical"
+                        />
+
+                    <ImageView
+                        app:srcCompat="@drawable/cast_mini_controller_progress_drawable"
+                        android:id="@+id/img1_1"
+                        android:layout_weight="1"
+                        android:layout_width="40dp"
+                        android:layout_height="60dp" />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        app:srcCompat="@drawable/cast_mini_controller_progress_drawable"
+                        android:id="@+id/img1_2"
+                        android:layout_weight="1"
+                        android:layout_height="60dp" />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        app:srcCompat="@drawable/cast_mini_controller_progress_drawable"
+                        android:id="@+id/img1_3"
+                        android:layout_weight="1"
+                        android:layout_height="60dp" />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        app:srcCompat="@drawable/cast_mini_controller_progress_drawable"
+                        android:id="@+id/img1_4"
+                        android:layout_weight="1"
+                        android:layout_height="60dp" />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        app:srcCompat="@drawable/cast_mini_controller_progress_drawable"
+                        android:id="@+id/img1_5"
+                        android:layout_weight="1"
+                        android:layout_height="60dp" />
+
+                </LinearLayout>
+            <View
+                android:layout_height="1dip"
+                android:layout_width="fill_parent"
+                android:background="#FF000000"
+                />
+
+                <LinearLayout
+                    android:weightSum="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+
+
+                    <TextView
+                        android:text="햇빛"
+                        android:layout_width="100dp"
+                        android:id="@+id/tx_2"
+                        android:layout_weight="1"
+                        android:textSize="20dp"
+                        android:layout_height="66dp"
+                        android:layout_marginLeft="10dp"
+                        android:gravity="center_vertical"
+                        />
+
+                    <ImageView
+                        app:srcCompat="@drawable/cast_mini_controller_progress_drawable"
+                        android:id="@+id/img2_1"
+                        android:layout_weight="1"
+                        android:layout_height="66dp"
+                        android:layout_width="40dp"
+                        />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="66dp"
+                        app:srcCompat="@drawable/cast_mini_controller_progress_drawable"
+                        android:id="@+id/img2_2"
+                        android:layout_weight="1" />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="66dp"
+                        app:srcCompat="@drawable/cast_mini_controller_progress_drawable"
+                        android:id="@+id/img2_3"
+                        android:layout_weight="1" />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="66dp"
+                        app:srcCompat="@drawable/cast_mini_controller_progress_drawable"
+                        android:id="@+id/img2_4"
+                        android:layout_weight="1" />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="66dp"
+                        app:srcCompat="@drawable/cast_mini_controller_progress_drawable"
+                        android:id="@+id/img2_5"
+                        android:layout_weight="1" />
+
+                </LinearLayout>
+
+            <View
+                android:layout_height="1dip"
+                android:layout_width="fill_parent"
+                android:background="#FF000000"
+                />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:weightSum="1"
+                    android:layout_height="wrap_content">
+
+
+
+                    <TextView
+                        android:text="온도"
+                        android:layout_width="100dp"
+                        android:id="@+id/tx_3"
+                        android:layout_weight="1"
+                        android:textSize="20dp"
+                        android:layout_height="66dp"
+                        android:layout_marginLeft="10dp"
+                        android:gravity="center_vertical"
+                        />
+
+                    <ImageView
+                        app:srcCompat="@drawable/cast_mini_controller_progress_drawable"
+                        android:id="@+id/img3_1"
+                        android:layout_weight="1"
+                        android:layout_height="66dp"
+                        android:layout_width="50dp" />
+
+                    <TextView
+                        android:text="TextView"
+                        android:layout_height="66dp"
+                        android:id="@+id/tv_t1"
+                        android:layout_weight="1"
+                        android:textSize="20sp"
+                        android:layout_width="50dp"
+                        android:gravity="center_vertical"/>
+
+                    <ImageView
+                        android:layout_height="66dp"
+                        app:srcCompat="@drawable/cast_mini_controller_progress_drawable"
+                        android:id="@+id/img3_2"
+                        android:layout_weight="1"
+                        android:layout_width="50dp" />
+
+                    <TextView
+                        android:text="TextView"
+                        android:layout_height="66dp"
+                        android:id="@+id/tv_t2"
+                        android:layout_weight="1"
+                        android:textSize="20sp"
+                        android:layout_width="50dp"
+                        android:gravity="center_vertical"/>
+
+                </LinearLayout>
+
+            <View
+                android:layout_height="1dip"
+                android:layout_width="fill_parent"
+                android:background="#FF000000"
+                />
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/re_regi">
+
+        <Button
+            android:text="등록"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/reg_button"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center_horizontal"
+             />
+    </RelativeLayout>
+
+
+</LinearLayout>

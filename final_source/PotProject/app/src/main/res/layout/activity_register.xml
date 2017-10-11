@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#90CFD5"
+    >
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:gravity="center"
+            android:text="회원가입"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/textView10"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:textSize="50sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/et_name"
+            android:hint="Name"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/et_name"
+                android:id="@+id/et_email"
+                android:hint="email"
+                android:textSize="18sp"
+                android:layout_width="310dp" />
+
+            <Button
+                android:text="중복"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/btn_check"
+                android:background="@color/common_google_signin_btn_text_dark_default"
+                android:elevation="2dp" />
+
+        </LinearLayout>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/et_password"
+            android:hint="password"
+            android:textSize="18sp"
+         />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/et_passcheck"
+            android:hint="Password Check"
+             />
+
+        <Button
+            android:text="가입하기"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_register"
+            android:background="@color/common_google_signin_btn_text_dark_default" />
+
+        <TextView
+            android:text="구글로그인은 로그인페이지를 이용해 주세요."
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView11"
+            android:textSize="15sp"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:textAlignment="center" />
+
+    </LinearLayout>
+
+</LinearLayout>
